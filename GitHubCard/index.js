@@ -46,6 +46,54 @@ const followersArray = [];
 
 */
 
+// component 
+function createComponents(obj) {
+  let cardDiv = document.createElement('div')
+  let imgSrc = document.createElement('img')
+  let infoDiv = document.createElement('div')
+  let h3 = document.createElement('h3')
+  let username = document.createElement('p')
+  let location = document.createElement('p')
+  let profile = document.createElement('p')
+  let link = document.createElement('a')
+  let followers = document.createElement('p')
+  let following = document.createElement('p')
+  let bio = document.createElement('p')
+
+  // create class names
+  cardDiv.classList.add('card')
+  infoDiv.classList.add('card-info')
+  h3.classList.add('name')
+  username.classList.add('username')
+
+  //create child relationships
+  cardDiv.appendChild(imgSrc)
+  infoDiv.appendChild(h3)
+  infoDiv.appendChild(username)
+  infoDiv.appendChild(location)
+  profile.appendChild(link)
+  infoDiv.appendChild(profile)
+  infoDiv.appendChild(followers)
+  infoDiv.appendChild(following)
+  infoDiv.appendChild(bio)
+  cardDiv.appendChild(infoDiv)
+
+  // add content
+  imgSrc.src = obj.data.avatar_url;
+  h3.textContent = 'Sable Madison Childs';
+  username.textContent = obj.data.login;
+  location.textContent = obj.data.location;
+  link.textContent = obj.data.url;
+  followers.textContent = obj.data.followers;
+  following.textContent = obj.data.following;
+  bio.textContent = obj.data.bio;
+
+  return cardDiv;
+}
+
+//select parent element
+const parentDOMElement = document.querySelector('.cards')
+
 /* List of LS Instructors Github username's: 
   tetondan
   dustinmyers
@@ -53,3 +101,17 @@ const followersArray = [];
   luishrd
   bigknell
 */
+
+
+//get request
+const axiosData = axios.get(' https://api.github.com/users/sablemadison')
+
+axiosData
+ .then( dataObj => {
+console.log('data', dataObj)
+const newCard = createComponents(dataObj)
+parentDOMElement.appendChild(newCard)
+ })
+ .catch(error => {
+console.log('error', error)
+ })
